@@ -15,7 +15,7 @@ For substantially more details on the API please see http://cocodataset.org/#dow
 
 # This clone's README:
 
-To support Windows build (with MVS ) and python2.7 i had to make [changes](https://github.com/cocodataset/cocoapi/) to:
+To support Windows x64 build with [Microsoft Visual C++ 9.0 standalone: Visual C++ Compiler for Python 2.7 and python2.7](https://www.microsoft.com/en-us/download/details.aspx?id=44266) I had to make [changes](https://github.com/cocodataset/cocoapi/) to:
 
 - `common/maskApi.h`
 - `common/maskApi.c`
