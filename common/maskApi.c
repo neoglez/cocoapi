@@ -12,8 +12,9 @@ uint umin( uint a, uint b ) { return (a<b) ? a : b; }
 uint umax( uint a, uint b ) { return (a>b) ? a : b; }
 
 void rleInit( RLE *R, siz h, siz w, siz m, uint *cnts ) {
+  siz j;
   R->h=h; R->w=w; R->m=m; R->cnts=(m==0)?0:malloc(sizeof(uint)*m);
-  siz j; if(cnts) for(j=0; j<m; j++) R->cnts[j]=cnts[j];
+  if(cnts) for(j=0; j<m; j++) R->cnts[j]=cnts[j];
 }
 
 void rleFree( RLE *R ) {
@@ -80,9 +81,9 @@ void rleIou( RLE *dt, RLE *gt, siz m, siz n, byte *iscrowd, double *o ) {
   gb=malloc(sizeof(double)*n*4); rleToBbox(gt,gb,n);
   bbIou(db,gb,m,n,iscrowd,o); free(db); free(gb);
   for( g=0; g<n; g++ ) for( d=0; d<m; d++ ) if(o[g*m+d]>0) {
+	siz ka, kb, a, b; uint c, ca, cb, ct, i, u; int va, vb;
     crowd=iscrowd!=NULL && iscrowd[g];
     if(dt[d].h!=gt[g].h || dt[d].w!=gt[g].w) { o[g*m+d]=-1; continue; }
-    siz ka, kb, a, b; uint c, ca, cb, ct, i, u; int va, vb;
     ca=dt[d].cnts[0]; ka=dt[d].m; va=vb=0;
     cb=gt[g].cnts[0]; kb=gt[g].m; a=b=1; i=u=0; ct=1;
     while( ct>0 ) {
@@ -161,7 +162,7 @@ int uintCompare(const void *a, const void *b) {
 
 void rleFrPoly( RLE *R, const double *xy, siz k, siz h, siz w ) {
   /* upsample and get discrete points densely along entire boundary */
-  siz j, m=0; double scale=5; int *x, *y, *u, *v; uint *a, *b;
+  siz j, m=0; double scale=5; int *x, *y, *u, *v; uint *a, *b; double xd, yd; uint p = 0;
   x=malloc(sizeof(int)*(k+1)); y=malloc(sizeof(int)*(k+1));
   for(j=0; j<k; j++) x[j]=(int)(scale*xy[j*2+0]+.5); x[k]=x[0];
   for(j=0; j<k; j++) y[j]=(int)(scale*xy[j*2+1]+.5); y[k]=y[0];
@@ -180,7 +181,7 @@ void rleFrPoly( RLE *R, const double *xy, siz k, siz h, siz w ) {
     }
   }
   /* get points along y-boundary and downsample */
-  free(x); free(y); k=m; m=0; double xd, yd;
+  free(x); free(y); k=m; m=0;
   x=malloc(sizeof(int)*k); y=malloc(sizeof(int)*k);
   for( j=1; j<k; j++ ) if(u[j]!=u[j-1]) {
     xd=(double)(u[j]<u[j-1]?u[j]:u[j]-1); xd=(xd+.5)/scale-.5;
@@ -193,7 +194,7 @@ void rleFrPoly( RLE *R, const double *xy, siz k, siz h, siz w ) {
   k=m; a=malloc(sizeof(uint)*(k+1));
   for( j=0; j<k; j++ ) a[j]=(uint)(x[j]*(int)(h)+y[j]);
   a[k++]=(uint)(h*w); free(u); free(v); free(x); free(y);
-  qsort(a,k,sizeof(uint),uintCompare); uint p=0;
+  qsort(a,k,sizeof(uint),uintCompare);
   for( j=0; j<k; j++ ) { uint t=a[j]; a[j]-=p; p=t; }
   b=malloc(sizeof(uint)*k); j=m=0; b[m++]=a[j++];
   while(j<k) if(a[j]>0) b[m++]=a[j++]; else {

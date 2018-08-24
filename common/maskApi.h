@@ -12,6 +12,18 @@ typedef unsigned char byte;
 typedef double* BB;
 typedef struct { siz h, w, m; uint *cnts; } RLE;
 
+#define INLINE __inline
+
+INLINE double fmax(double left, double right)
+{
+	return (left > right) ? left : right;
+}
+
+INLINE double fmin(double left, double right)
+{
+	return (left < right) ? left : right;
+}
+
 /* Initialize/destroy RLE. */
 void rleInit( RLE *R, siz h, siz w, siz m, uint *cnts );
 void rleFree( RLE *R );
