@@ -19,12 +19,12 @@ To support Windows x64 build with [Microsoft Visual C++ 9.0 standalone: Visual C
 
 - `common/maskApi.h`
 - `common/maskApi.c`
-- `PythonApi/setup.py`
+- `PythonAPI/setup.py`
 
 To install this package:
 
 ```
 git clone https://github.com/neoglez/cocoapi
-cd PythonApi
+cd PythonAPI
 python setup.py build_ext install
 ```
