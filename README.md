@@ -14,6 +14,7 @@ Please download and place the annotations in: coco/annotations/
 For substantially more details on the API please see http://cocodataset.org/#download.
 
 # This clone's README:
+[![Build status](https://ci.appveyor.com/api/projects/status/r45q0m8taig5igb7/branch/master?svg=true)](https://ci.appveyor.com/project/neoglez/cocoapi/branch/master)
 
 To support Windows x64 build with [Microsoft Visual C++ 9.0 standalone: Visual C++ Compiler for Python 2.7](https://www.microsoft.com/en-us/download/details.aspx?id=44266) I had to make [changes](https://github.com/neoglez/cocoapi/commit/582765b6ea8f9eada10148ae4e11f4b815360eeb) to:
 
